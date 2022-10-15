@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WetPet.Api\WetPet.Api.csproj" />
+    <ProjectReference Include="..\..\src\WetPet.Api\WetPet.Api.csproj" />
   </ItemGroup>
 
 </Project>

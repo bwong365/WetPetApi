@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WetPet.AppCore\WetPet.AppCore.csproj" />
+    <ProjectReference Include="..\..\src\WetPet.AppCore\WetPet.AppCore.csproj" />
   </ItemGroup>
 
 </Project>

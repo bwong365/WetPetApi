@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.Api", "WetPet.Api\WetPet.Api.csproj", "{47C76A09-7624-4FB0-9410-196F43019B92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.Api", "src\WetPet.Api\WetPet.Api.csproj", "{47C76A09-7624-4FB0-9410-196F43019B92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.Contracts", "WetPet.Contracts\WetPet.Contracts.csproj", "{6CE74BD2-FAEC-4AE3-B313-BD76C8581A16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.Contracts", "src\WetPet.Contracts\WetPet.Contracts.csproj", "{6CE74BD2-FAEC-4AE3-B313-BD76C8581A16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.Infrastructure", "WetPet.Infrastructure\WetPet.Infrastructure.csproj", "{0BECACDC-FF06-4BB6-B5A8-358E65E92E9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.Infrastructure", "src\WetPet.Infrastructure\WetPet.Infrastructure.csproj", "{0BECACDC-FF06-4BB6-B5A8-358E65E92E9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.AppCore", "WetPet.AppCore\WetPet.AppCore.csproj", "{2896C509-B90D-4B1C-AFD5-BE300C5BA3B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.AppCore", "src\WetPet.AppCore\WetPet.AppCore.csproj", "{2896C509-B90D-4B1C-AFD5-BE300C5BA3B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{56253F79-7DE0-4583-888D-2D49F5412A79}"
 EndProject
