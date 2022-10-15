@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.Infrastructure", "We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.AppCore", "WetPet.AppCore\WetPet.AppCore.csproj", "{2896C509-B90D-4B1C-AFD5-BE300C5BA3B7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{56253F79-7DE0-4583-888D-2D49F5412A79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetPet.AppCore.Test", "tests\WetPet.AppCore.Test\WetPet.AppCore.Test.csproj", "{D969FD96-4681-4A04-BD14-252383784981}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,12 @@ Global
 		{2896C509-B90D-4B1C-AFD5-BE300C5BA3B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2896C509-B90D-4B1C-AFD5-BE300C5BA3B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2896C509-B90D-4B1C-AFD5-BE300C5BA3B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D969FD96-4681-4A04-BD14-252383784981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D969FD96-4681-4A04-BD14-252383784981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D969FD96-4681-4A04-BD14-252383784981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D969FD96-4681-4A04-BD14-252383784981}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D969FD96-4681-4A04-BD14-252383784981} = {56253F79-7DE0-4583-888D-2D49F5412A79}
 	EndGlobalSection
 EndGlobal
