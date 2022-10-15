@@ -7,7 +7,7 @@ namespace WetPet.Api.Controllers;
 
 [ApiController]
 [ProducesResponseType(typeof(ValidationProblemDetails), 400)]
-public class ApiController : ControllerBase
+public abstract class ApiController : ControllerBase
 {
     protected IActionResult Problem(List<Error> errors)
     {
