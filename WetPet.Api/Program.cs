@@ -1,11 +1,15 @@
+using WetPet.Api.DependencyInjection;
+using WetPet.AppCore.DependencyInjection;
+using WetPet.Infrastructure.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services
+    .AddApi()
+    .AddAppCore()
+    .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
