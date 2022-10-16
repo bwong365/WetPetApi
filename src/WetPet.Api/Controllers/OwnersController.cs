@@ -1,6 +1,8 @@
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using WetPet.AppCore.Services.Commands.CreateOwner;
+using WetPet.Contracts.Owners;
 
 namespace WetPet.Api.Controllers;
 
@@ -23,7 +25,20 @@ public class OwnersController : ApiController
         var command = new CreateOwnerCommand { Sub = sub };
         var result = await _sender.Send(command, ct);
         return result.Match(
-            success => Created("/user", null),
+            success => Created("/owner", null),
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpPost("webhook")]
+    [ProducesResponseType(201)]
+    [DisableCors]
+    public async Task<IActionResult> CreateOwnerWebhookAsync([FromBody] OwnerWebhookCreationRequest request, CancellationToken ct)
+    {
+        var command = new CreateOwnerCommand { Sub = request.Sub };
+        var result = await _sender.Send(command, ct);
+        return result.Match(
+            success => Created("/owner", null),
             errors => Problem(errors)
         );
     }

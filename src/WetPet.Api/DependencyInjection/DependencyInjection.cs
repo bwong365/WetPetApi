@@ -5,7 +5,7 @@ namespace WetPet.Api.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApi(this IServiceCollection services)
+    public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<RouteOptions>(opt =>
         {
@@ -19,6 +19,7 @@ public static class DependencyInjection
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddMapster();
+        services.ConfigureCors(configuration);
         return services;
     }
 }

@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services
-    .AddApi()
+    .AddApi(builder.Configuration)
     .AddAppCore()
     .AddInfrastructure(builder.Configuration);
 
@@ -21,9 +21,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCustomCors();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
