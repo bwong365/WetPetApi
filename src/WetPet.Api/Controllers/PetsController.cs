@@ -5,7 +5,7 @@ using WetPet.AppCore.Services.Commands.AddPet;
 using WetPet.AppCore.Services.Commands.ReleasePet;
 using WetPet.AppCore.Services.Commands.UpdatePet;
 using WetPet.AppCore.Services.Queries.GetPets;
-using WetPet.AppCore.Services.Queries.GetWeatherForPet;
+using WetPet.AppCore.Services.Queries.GetPetReport;
 using WetPet.Contracts.Pets;
 
 namespace WetPet.Api.Controllers;
@@ -22,7 +22,7 @@ public class PetsController : ApiController
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet(Name = "getPets")]
     [ProducesResponseType(typeof(List<PetResponse>), 200)]
     public async Task<IActionResult> GetPetsAsync()
     {
@@ -35,21 +35,21 @@ public class PetsController : ApiController
         );
     }
 
-    [HttpGet("{id:guid}/weather")]
-    [ProducesResponseType(typeof(WeatherForPetResponse), 200)]
-    public async Task<IActionResult> GetWeatherForPetAsync(Guid id, CancellationToken ct)
+    [HttpGet("{id:guid}/report", Name = "getPetReport")]
+    [ProducesResponseType(typeof(PetReportResponse), 200)]
+    public async Task<IActionResult> GetPetReportAsync(Guid id, CancellationToken ct)
     {
         // TODO: Get sub from JWT
         var sub = "test-sub";
-        var result = await _sender.Send(new GetWeatherForPetQuery { Sub = sub, PetId = id }, ct);
+        var result = await _sender.Send(new GetPetReportQuery { Sub = sub, PetId = id }, ct);
         return result.Match(
-            weather => Ok(_mapper.Map<WeatherForPetResponse>(weather)),
+            weather => Ok(_mapper.Map<PetReportResponse>(weather)),
             errors => Problem(errors)
         );
     }
 
 
-    [HttpPost]
+    [HttpPost(Name = "addPet")]
     [ProducesResponseType(typeof(PetResponse), 201)]
     public async Task<IActionResult> AddPetAsync([FromBody] PetAdditionRequest request, CancellationToken ct)
     {
@@ -63,7 +63,7 @@ public class PetsController : ApiController
         );
     }
 
-    [HttpPut("{petId:guid}")]
+    [HttpPut("{petId:guid}", Name = "updatePet")]
     [ProducesResponseType(typeof(PetResponse), 200)]
     public async Task<IActionResult> UpdatePetAsync([FromRoute] Guid petId, [FromBody] PetUpdateRequest request, CancellationToken ct)
     {
@@ -77,7 +77,7 @@ public class PetsController : ApiController
         );
     }
 
-    [HttpDelete("{petId:guid}")]
+    [HttpDelete("{petId:guid}", Name = "releasePet")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> ReleasePetAsync([FromRoute] Guid petId, CancellationToken ct)
     {

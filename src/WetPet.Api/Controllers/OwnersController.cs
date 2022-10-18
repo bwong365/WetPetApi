@@ -16,7 +16,7 @@ public class OwnersController : ApiController
         _sender = sender;
     }
 
-    [HttpPost]
+    [HttpPost(Name = "createOwner")]
     [ProducesResponseType(201)]
     public async Task<IActionResult> CreateOwnerAsync(CancellationToken ct)
     {
@@ -30,7 +30,8 @@ public class OwnersController : ApiController
         );
     }
 
-    [HttpPost("webhook")]
+    [HttpPost("webhook", Name = "createOwnerWebhook")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [ProducesResponseType(201)]
     [DisableCors]
     public async Task<IActionResult> CreateOwnerWebhookAsync([FromBody] OwnerWebhookCreationRequest request, CancellationToken ct)

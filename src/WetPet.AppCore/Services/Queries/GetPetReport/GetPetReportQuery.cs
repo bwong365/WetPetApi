@@ -2,9 +2,9 @@ using ErrorOr;
 using MediatR;
 using WetPet.AppCore.Aggregates;
 
-namespace WetPet.AppCore.Services.Queries.GetWeatherForPet;
+namespace WetPet.AppCore.Services.Queries.GetPetReport;
 
-public record GetWeatherForPetQuery : IRequest<ErrorOr<PetReport>>
+public record GetPetReportQuery : IRequest<ErrorOr<PetReport>>
 {
     public Guid PetId { get; init; }
     public string Sub { get; set; } = null!;

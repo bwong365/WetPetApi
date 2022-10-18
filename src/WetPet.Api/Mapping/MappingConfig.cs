@@ -32,7 +32,7 @@ public class MappingConfig : IRegister
         config.NewConfig<Pet, PetResponse>()
             .Map(dest => dest, src => src.Location);
 
-        config.NewConfig<PetReport, WeatherForPetResponse>()
+        config.NewConfig<PetReport, PetReportResponse>()
             .Map(dest => dest, src => src.Pet)
             .Map(dest => dest, src => src.WeatherData)
             .Map(dest => dest, src => src.Pet.Location);

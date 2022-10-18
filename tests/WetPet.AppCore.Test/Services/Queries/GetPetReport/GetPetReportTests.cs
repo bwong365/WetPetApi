@@ -4,10 +4,10 @@ using WetPet.AppCore.Common.Enums;
 using WetPet.AppCore.Common.Errors;
 using WetPet.AppCore.Entities;
 using WetPet.AppCore.Interfaces;
-using WetPet.AppCore.Services.Queries.GetWeatherForPet;
+using WetPet.AppCore.Services.Queries.GetPetReport;
 using WetPet.AppCore.ValueObjects;
 
-namespace WetPet.AppCore.Test.Services.Queries.GetWeatherForPet;
+namespace WetPet.AppCore.Test.Services.Queries.GetPetReport;
 
 public class GetPetReportQueryTests
 {
@@ -15,7 +15,7 @@ public class GetPetReportQueryTests
     private readonly Mock<IOwnerRepository> _ownerRepository;
     private readonly Mock<IWeatherService> _weatherService;
     private readonly Mock<IPetStatusService> _petStatusService;
-    private readonly GetWeatherForPetQueryHandler _sut;
+    private readonly GetPetReportQueryHandler _sut;
 
     public GetPetReportQueryTests()
     {
@@ -23,14 +23,14 @@ public class GetPetReportQueryTests
         _ownerRepository = new Mock<IOwnerRepository>();
         _weatherService = new Mock<IWeatherService>();
         _petStatusService = new Mock<IPetStatusService>();
-        _sut = new GetWeatherForPetQueryHandler(_petRepository.Object, _ownerRepository.Object, _weatherService.Object, _petStatusService.Object);
+        _sut = new GetPetReportQueryHandler(_petRepository.Object, _ownerRepository.Object, _weatherService.Object, _petStatusService.Object);
     }
 
     [Theory]
     [AutoData]
     public async Task Handle_WhenOwnerNotFound_ReturnsOwnerNotFound(string sub)
     {
-        var result = await _sut.Handle(new GetWeatherForPetQuery { Sub = sub, PetId = Guid.NewGuid() }, CancellationToken.None);
+        var result = await _sut.Handle(new GetPetReportQuery { Sub = sub, PetId = Guid.NewGuid() }, CancellationToken.None);
 
         Assert.True(result.IsError);
         Assert.Equal(Errors.Owner.NotFound.Code, result.FirstError.Code);
@@ -39,7 +39,7 @@ public class GetPetReportQueryTests
     [Theory, AutoData]
     public async Task Handle_WhenPetNotFound_ReturnsPetNotFound(Owner owner)
     {
-        var query = new GetWeatherForPetQuery { PetId = Guid.NewGuid(), Sub = owner.Sub };
+        var query = new GetPetReportQuery { PetId = Guid.NewGuid(), Sub = owner.Sub };
         _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
 
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -53,7 +53,7 @@ public class GetPetReportQueryTests
     {
         pet.OwnerId = Guid.NewGuid();
         owner.Id = Guid.NewGuid();
-        var query = new GetWeatherForPetQuery { PetId = pet.Id, Sub = owner.Sub };
+        var query = new GetPetReportQuery { PetId = pet.Id, Sub = owner.Sub };
         _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
         _petRepository.Setup(x => x.GetPetAsync(pet.Id, It.IsAny<CancellationToken>())).ReturnsAsync(pet);
 
@@ -67,7 +67,7 @@ public class GetPetReportQueryTests
     public async Task Handle_WhenWeatherServiceHasError_ReturnsError(Owner owner, Pet pet)
     {
         pet.OwnerId = owner.Id;
-        var query = new GetWeatherForPetQuery { PetId = pet.Id, Sub = owner.Sub };
+        var query = new GetPetReportQuery { PetId = pet.Id, Sub = owner.Sub };
         _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
         _petRepository.Setup(x => x.GetPetAsync(query.PetId, It.IsAny<CancellationToken>())).ReturnsAsync(pet);
         _weatherService.Setup(x => x.GetWeatherDataAsync(pet.Location, It.IsAny<CancellationToken>())).ReturnsAsync(Errors.Location.InvalidLocation);
@@ -82,7 +82,7 @@ public class GetPetReportQueryTests
     public async Task Handle_WhenPetStatusServiceHasError_ReturnError(Owner owner, Pet pet)
     {
         pet.OwnerId = owner.Id;
-        var query = new GetWeatherForPetQuery { PetId = pet.Id, Sub = owner.Sub };
+        var query = new GetPetReportQuery { PetId = pet.Id, Sub = owner.Sub };
         _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
         _petRepository.Setup(x => x.GetPetAsync(query.PetId, It.IsAny<CancellationToken>())).ReturnsAsync(pet);
         _weatherService.Setup(x => x.GetWeatherDataAsync(pet.Location, It.IsAny<CancellationToken>())).ReturnsAsync(new WeatherData());
@@ -98,7 +98,7 @@ public class GetPetReportQueryTests
     public async Task Success(Owner owner, Pet pet, WeatherData weatherData)
     {
         pet.OwnerId = owner.Id;
-        var query = new GetWeatherForPetQuery { PetId = pet.Id, Sub = owner.Sub };
+        var query = new GetPetReportQuery { PetId = pet.Id, Sub = owner.Sub };
         _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
         _petRepository.Setup(x => x.GetPetAsync(query.PetId, It.IsAny<CancellationToken>())).ReturnsAsync(pet);
         _weatherService.Setup(x => x.GetWeatherDataAsync(pet.Location, It.IsAny<CancellationToken>())).ReturnsAsync(weatherData);

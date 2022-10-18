@@ -1,6 +1,6 @@
 namespace WetPet.Contracts.Pets;
 
-public class WeatherForPetResponse
+public class PetReportResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;

@@ -4,16 +4,16 @@ using WetPet.AppCore.Aggregates;
 using WetPet.AppCore.Common.Errors;
 using WetPet.AppCore.Interfaces;
 
-namespace WetPet.AppCore.Services.Queries.GetWeatherForPet;
+namespace WetPet.AppCore.Services.Queries.GetPetReport;
 
-public class GetWeatherForPetQueryHandler : IRequestHandler<GetWeatherForPetQuery, ErrorOr<PetReport>>
+public class GetPetReportQueryHandler : IRequestHandler<GetPetReportQuery, ErrorOr<PetReport>>
 {
     private readonly IPetRepository _petRepository;
     private readonly IOwnerRepository _ownerRepository;
     private readonly IWeatherService _weatherService;
     private readonly IPetStatusService _petStatusService;
 
-    public GetWeatherForPetQueryHandler(IPetRepository petRepository, IOwnerRepository ownerRepository, IWeatherService weatherService, IPetStatusService petStatusService)
+    public GetPetReportQueryHandler(IPetRepository petRepository, IOwnerRepository ownerRepository, IWeatherService weatherService, IPetStatusService petStatusService)
     {
         _petRepository = petRepository;
         _ownerRepository = ownerRepository;
@@ -22,7 +22,7 @@ public class GetWeatherForPetQueryHandler : IRequestHandler<GetWeatherForPetQuer
     }
 
 
-    public async Task<ErrorOr<PetReport>> Handle(GetWeatherForPetQuery query, CancellationToken ct)
+    public async Task<ErrorOr<PetReport>> Handle(GetPetReportQuery query, CancellationToken ct)
     {
         var owner = await _ownerRepository.GetOwnerAsync(query.Sub, ct);
         if (owner is null)
