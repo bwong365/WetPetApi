@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using WetPet.Api.Mapping;
+using WetPet.Api.Util;
 
 namespace WetPet.Api.DependencyInjection;
 
@@ -17,7 +18,12 @@ public static class DependencyInjection
             opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(c =>
+        {
+            c.SchemaFilter<RequireNonNullablePropertiesSchemaFilter>();
+            c.SupportNonNullableReferenceTypes();
+            c.UseAllOfToExtendReferenceSchemas();
+        });
         services.AddMapster();
         services.ConfigureCors(configuration);
         return services;
