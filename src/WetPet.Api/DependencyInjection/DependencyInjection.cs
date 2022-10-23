@@ -17,6 +17,7 @@ public static partial class DependencyInjection
         services.AddControllers().AddJsonOptions(opt =>
         {
             opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            opt.JsonSerializerOptions.Converters.Add(new JsonStringTrimmingConverter());
         });
         services.AddCustomSwagger();
         services.AddMapster();
