@@ -27,7 +27,7 @@ public class PetRepository : IPetRepository
 
     public async Task<List<Pet>> GetPetsAsync(Guid ownerId, CancellationToken? cancellationToken = null)
     {
-        return await _context.Pets.Where(p => p.OwnerId == ownerId).ToListAsync(cancellationToken ?? CancellationToken.None);
+        return await _context.Pets.Where(p => p.OwnerId == ownerId).OrderBy(p => p.CreatedDateUtc).ToListAsync(cancellationToken ?? CancellationToken.None);
     }
 
     public async Task RemovePetAsync(Guid petId, CancellationToken? cancellationToken = null)

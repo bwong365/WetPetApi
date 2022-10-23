@@ -11,6 +11,7 @@ public class Pet
     public Location Location { get; set; } = null!;
     public PetSpecies Species { get; set; }
     public Guid OwnerId { get; set; }
+    public DateTime CreatedDateUtc { get; set; } = DateTime.UtcNow;
 
     public void UpdateOwner(Owner owner)
     {
