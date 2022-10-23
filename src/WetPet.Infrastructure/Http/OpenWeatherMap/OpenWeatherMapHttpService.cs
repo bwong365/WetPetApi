@@ -23,7 +23,7 @@ public class OpenWeatherMapHttpService : IOpenWeatherMapHttpService
 
     public async Task<ErrorOr<GeoResponse[]?>> GetLocationDataAsync(Location location, CancellationToken? ct)
     {
-        var url = $"{_settings.GeoBaseUrl}?q={location.City},{location.State},{location.Country}&appid={_settings.ApiKey}";
+        var url = $"{_settings.GeoBaseUrl}?q={location.City},{location.State ?? ""},{location.Country}&appid={_settings.ApiKey}";
         _cache.TryGetValue(url, out GeoResponse[]? cachedData);
         if (cachedData is not null)
         {
