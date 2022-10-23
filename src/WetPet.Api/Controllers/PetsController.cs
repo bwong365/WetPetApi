@@ -26,9 +26,7 @@ public class PetsController : ApiController
     [ProducesResponseType(typeof(List<PetResponse>), 200)]
     public async Task<IActionResult> GetPetsAsync()
     {
-        // TODO: Get sub from JWT
-        var sub = "test-sub";
-        var result = await _sender.Send(new GetPetsQuery { Sub = sub });
+        var result = await _sender.Send(new GetPetsQuery { Sub = Sub });
         return result.Match(
             pets => Ok(_mapper.Map<List<PetResponse>>(pets)),
             errors => Problem(errors)
@@ -39,9 +37,7 @@ public class PetsController : ApiController
     [ProducesResponseType(typeof(PetReportResponse), 200)]
     public async Task<IActionResult> GetPetReportAsync(Guid id, CancellationToken ct)
     {
-        // TODO: Get sub from JWT
-        var sub = "test-sub";
-        var result = await _sender.Send(new GetPetReportQuery { Sub = sub, PetId = id }, ct);
+        var result = await _sender.Send(new GetPetReportQuery { Sub = Sub, PetId = id }, ct);
         return result.Match(
             weather => Ok(_mapper.Map<PetReportResponse>(weather)),
             errors => Problem(errors)
@@ -53,9 +49,7 @@ public class PetsController : ApiController
     [ProducesResponseType(typeof(PetResponse), 201)]
     public async Task<IActionResult> AddPetAsync([FromBody] PetAdditionRequest request, CancellationToken ct)
     {
-        // TODO: Get sub from JWT
-        var sub = "test-sub";
-        var command = _mapper.Map<AddPetCommand>((sub, request));
+        var command = _mapper.Map<AddPetCommand>((Sub, request));
         var result = await _sender.Send(command, ct);
         return result.Match(
             pet => Created($"/pets/{pet.Id}", _mapper.Map<PetResponse>(pet)),
@@ -67,9 +61,7 @@ public class PetsController : ApiController
     [ProducesResponseType(typeof(PetResponse), 200)]
     public async Task<IActionResult> UpdatePetAsync([FromRoute] Guid petId, [FromBody] PetUpdateRequest request, CancellationToken ct)
     {
-        // TODO: Get sub from JWT
-        var sub = "test-sub";
-        var command = _mapper.Map<UpdatePetCommand>((sub, petId, request));
+        var command = _mapper.Map<UpdatePetCommand>((Sub, petId, request));
         var result = await _sender.Send(command, ct);
         return result.Match(
             pet => Ok(_mapper.Map<PetResponse>(pet)),
@@ -81,9 +73,7 @@ public class PetsController : ApiController
     [ProducesResponseType(204)]
     public async Task<IActionResult> ReleasePetAsync([FromRoute] Guid petId, CancellationToken ct)
     {
-        // TODO: Get sub from JWT
-        var sub = "test-sub";
-        var command = new ReleasePetCommand { PetId = petId, Sub = sub };
+        var command = new ReleasePetCommand { PetId = petId, Sub = Sub };
         var result = await _sender.Send(command, ct);
         return result.Match(
             _ => NoContent(),

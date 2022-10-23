@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using WetPet.AppCore.Services.Commands.CreateOwner;
@@ -20,9 +21,7 @@ public class OwnersController : ApiController
     [ProducesResponseType(201)]
     public async Task<IActionResult> CreateOwnerAsync(CancellationToken ct)
     {
-        // TODO: Get sub from JWT
-        var sub = "test-sub";
-        var command = new CreateOwnerCommand { Sub = sub };
+        var command = new CreateOwnerCommand { Sub = Sub };
         var result = await _sender.Send(command, ct);
         return result.Match(
             success => Created("/owner", null),
@@ -33,6 +32,7 @@ public class OwnersController : ApiController
     [HttpPost("webhook", Name = "createOwnerWebhook")]
     [ApiExplorerSettings(IgnoreApi = true)]
     [ProducesResponseType(201)]
+    [AllowAnonymous]
     [DisableCors]
     public async Task<IActionResult> CreateOwnerWebhookAsync([FromBody] OwnerWebhookCreationRequest request, CancellationToken ct)
     {

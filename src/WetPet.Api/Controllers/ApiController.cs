@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using ErrorOr;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WetPet.AppCore.Common.Errors;
@@ -6,9 +8,12 @@ using WetPet.AppCore.Common.Errors;
 namespace WetPet.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [ProducesResponseType(typeof(ValidationProblemDetails), 400)]
 public abstract class ApiController : ControllerBase
 {
+    protected string Sub => User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
     protected IActionResult Problem(List<Error> errors)
     {
         if (errors.Count == 0)

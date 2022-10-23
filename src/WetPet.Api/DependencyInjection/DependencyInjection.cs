@@ -4,26 +4,21 @@ using WetPet.Api.Util;
 
 namespace WetPet.Api.DependencyInjection;
 
-public static class DependencyInjection
+public static partial class DependencyInjection
 {
-    public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
     {
         services.Configure<RouteOptions>(opt =>
         {
             opt.LowercaseUrls = true;
             opt.LowercaseQueryStrings = true;
         });
+        services.AddAuth(configuration, env);
         services.AddControllers().AddJsonOptions(opt =>
         {
             opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c =>
-        {
-            c.SchemaFilter<RequireNonNullablePropertiesSchemaFilter>();
-            c.SupportNonNullableReferenceTypes();
-            c.UseAllOfToExtendReferenceSchemas();
-        });
+        services.AddCustomSwagger();
         services.AddMapster();
         services.ConfigureCors(configuration);
         return services;

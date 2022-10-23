@@ -3,25 +3,18 @@ using WetPet.AppCore.DependencyInjection;
 using WetPet.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
 builder.Services
-    .AddApi(builder.Configuration)
+    .AddApi(builder.Configuration, builder.Environment)
     .AddAppCore()
     .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseCustomSwagger();
 }
-
 app.UseHttpsRedirection();
 app.UseCustomCors();
-app.UseAuthorization();
+app.UseAuth();
 app.MapControllers();
 app.Run();

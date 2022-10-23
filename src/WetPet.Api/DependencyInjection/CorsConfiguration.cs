@@ -1,6 +1,6 @@
 namespace WetPet.Api.DependencyInjection;
 
-public static partial class StartupConfigurationExtensions
+public static partial class DependencyInjection
 {
     public const string CorsPolicy = "TheCorsPolicy";
 
