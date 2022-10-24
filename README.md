@@ -7,4 +7,3 @@ The app can be found at [https://wet-pet-ui.fly.dev](https://wet-pet-ui.fly.dev)
 Frontend repo is at https://github.com/bwong365/wet-pet-ui
 
 - WetPetApi was really an excuse to build a whimsically themed API using Clean Architecture and DDD principles.
-- Integration with Auth0 will come while the front-end is developed
