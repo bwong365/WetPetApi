@@ -1,5 +1,4 @@
 using ErrorOr;
-using Microsoft.Extensions.Caching.Memory;
 using WetPet.AppCore.Common.Errors;
 using WetPet.AppCore.Interfaces;
 using WetPet.AppCore.ValueObjects;
@@ -11,7 +10,7 @@ public class LocationService : ILocationService
 {
     private readonly IOpenWeatherMapHttpService _openWeatherMapHttpService;
 
-    public LocationService(IOpenWeatherMapHttpService openWeatherMapHttpService, IMemoryCache cache)
+    public LocationService(IOpenWeatherMapHttpService openWeatherMapHttpService)
     {
         _openWeatherMapHttpService = openWeatherMapHttpService;
     }

@@ -1,5 +1,4 @@
 using ErrorOr;
-using Microsoft.Extensions.Caching.Memory;
 using WetPet.AppCore.Common.Enums;
 using WetPet.AppCore.Interfaces;
 using WetPet.AppCore.ValueObjects;
@@ -11,24 +10,15 @@ public class WeatherService : IWeatherService
 {
     private readonly IOpenWeatherMapHttpService _httpService;
     private readonly ILocationService _locationService;
-    private readonly IMemoryCache _cache;
 
-    public WeatherService(IOpenWeatherMapHttpService httpService, ILocationService locationService, IMemoryCache cache)
+    public WeatherService(IOpenWeatherMapHttpService httpService, ILocationService locationService)
     {
         _httpService = httpService;
         _locationService = locationService;
-        _cache = cache;
     }
 
     public async Task<ErrorOr<WeatherData>> GetWeatherDataAsync(Location location, CancellationToken? ct)
     {
-        var cacheKey = $"{location.City},{location.State},{location.Country}";
-        _cache.TryGetValue(cacheKey, out WeatherData? cachedData);
-        if (cachedData is not null)
-        {
-            return cachedData;
-        }
-
         var coordinates = await _locationService.GetCoordinatesAsync(location, ct);
         if (coordinates.IsError)
         {
@@ -53,7 +43,6 @@ public class WeatherService : IWeatherService
             }
         };
 
-        _cache.Set(cacheKey, weatherData, TimeSpan.FromMinutes(30));
         return weatherData;
     }
 }

@@ -37,7 +37,7 @@ public class OpenWeatherMapHttpService : IOpenWeatherMapHttpService
         }
         var geoResponse = await DeserializeAsync<GeoResponse[]>(httpResponse, ct);
 
-        _cache.Set(url, geoResponse, TimeSpan.FromMinutes(30));
+        _cache.Set(url, geoResponse, TimeSpan.FromMinutes(1440));
         return geoResponse;
     }
 
@@ -57,7 +57,7 @@ public class OpenWeatherMapHttpService : IOpenWeatherMapHttpService
         }
         var weatherResponse = await DeserializeAsync<WeatherResponse>(httpResponse, ct);
 
-        _cache.Set(url, weatherResponse, TimeSpan.FromMinutes(30));
+        _cache.Set(url, weatherResponse, TimeSpan.FromMinutes(10));
         return weatherResponse;
     }
 
