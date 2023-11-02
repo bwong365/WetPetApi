@@ -29,6 +29,6 @@ public class PetValidatorTests
 
         Assert.False(result.IsValid);
         Assert.Contains("Name", result.Errors.Select(x => x.PropertyName));
-        Assert.Contains("Location.State", result.Errors.Select(x => x.PropertyName));
+        Assert.Contains("Location.Country", result.Errors.Select(x => x.PropertyName));
     }
 }

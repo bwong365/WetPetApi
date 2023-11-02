@@ -17,7 +17,8 @@ public class MappingConfig : IRegister
         config.NewConfig<PetAdditionRequest, Pet>()
             .Map(dest => dest.Location, src => src)
             .Ignore(dest => dest.Id)
-            .Ignore(dest => dest.OwnerId);
+            .Ignore(dest => dest.OwnerId)
+            .Ignore(dest => dest.CreatedDateUtc);
 
         config.NewConfig<(string sub, PetAdditionRequest request), AddPetCommand>()
             .Map(dest => dest.Sub, src => src.sub)

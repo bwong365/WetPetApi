@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
+using Polly.CircuitBreaker;
 using Polly.Contrib.WaitAndRetry;
 using WetPet.AppCore.Interfaces;
 using WetPet.Infrastructure.Http.OpenWeatherMap;
@@ -27,4 +28,6 @@ public static class DependencyInjection
         services.AddScoped<IWeatherService, WeatherService>();
         return services;
     }
+
+    private static readonly AsyncCircuitBreakerPolicy<HttpResponseMessage> CircuitBreakerPolicy = Policy.HandleResult<HttpResponseMessage>(message => (int) message.StatusCode == 503).CircuitBreakerAsync(2, TimeSpan.FromMinutes(1));
 }

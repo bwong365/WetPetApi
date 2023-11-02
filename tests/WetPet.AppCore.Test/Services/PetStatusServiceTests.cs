@@ -1,4 +1,4 @@
-using Moq;
+using NSubstitute;
 using WetPet.AppCore.Common.Enums;
 using WetPet.AppCore.Interfaces;
 using WetPet.AppCore.Services;
@@ -8,20 +8,21 @@ namespace WetPet.AppCore.Test.Services;
 
 public class PetStatusServiceTests
 {
-    private readonly Mock<IClimateRangeProvider> _climateRangeProvider;
+
+    private readonly IClimateRangeProvider _climateRangeProvider;
     private readonly PetStatusService _sut;
 
     public PetStatusServiceTests()
     {
-        _climateRangeProvider = new Mock<IClimateRangeProvider>();
-        _sut = new PetStatusService(_climateRangeProvider.Object);
+       _climateRangeProvider =  Substitute.For<IClimateRangeProvider>();
+        _sut = new PetStatusService(_climateRangeProvider);
     }
 
     [Theory]
     [MemberData(nameof(GetStatusesTestData))]
     public void Returns_CorrectStatuses(List<PetStatus> expectedStatuses, IClimateRange climateRange, WeatherData weatherData)
     {
-        _climateRangeProvider.Setup(p => p.GetClimateRange(It.IsAny<PetSpecies>())).Returns(ErrorOr.ErrorOr.From(climateRange));
+        _climateRangeProvider.GetClimateRange(Arg.Any<PetSpecies>()).Returns(ErrorOr.ErrorOr.From(climateRange));
 
         var result = _sut.GetPetStatuses(PetSpecies.Dog, weatherData).Value.ToList();
 

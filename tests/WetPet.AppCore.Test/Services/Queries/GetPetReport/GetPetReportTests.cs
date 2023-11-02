@@ -1,5 +1,5 @@
 using AutoFixture.Xunit2;
-using Moq;
+using NSubstitute;
 using WetPet.AppCore.Common.Enums;
 using WetPet.AppCore.Common.Errors;
 using WetPet.AppCore.Entities;
@@ -11,19 +11,19 @@ namespace WetPet.AppCore.Test.Services.Queries.GetPetReport;
 
 public class GetPetReportQueryTests
 {
-    private readonly Mock<IPetRepository> _petRepository;
-    private readonly Mock<IOwnerRepository> _ownerRepository;
-    private readonly Mock<IWeatherService> _weatherService;
-    private readonly Mock<IPetStatusService> _petStatusService;
+    private readonly IPetRepository _petRepository;
+    private readonly IOwnerRepository _ownerRepository;
+    private readonly IWeatherService _weatherService;
+    private readonly IPetStatusService _petStatusService;
     private readonly GetPetReportQueryHandler _sut;
 
     public GetPetReportQueryTests()
     {
-        _petRepository = new Mock<IPetRepository>();
-        _ownerRepository = new Mock<IOwnerRepository>();
-        _weatherService = new Mock<IWeatherService>();
-        _petStatusService = new Mock<IPetStatusService>();
-        _sut = new GetPetReportQueryHandler(_petRepository.Object, _ownerRepository.Object, _weatherService.Object, _petStatusService.Object);
+        _petRepository = Substitute.For<IPetRepository>();
+        _ownerRepository = Substitute.For<IOwnerRepository>();
+        _weatherService = Substitute.For<IWeatherService>();
+        _petStatusService = Substitute.For<IPetStatusService>();
+        _sut = new GetPetReportQueryHandler(_petRepository, _ownerRepository, _weatherService, _petStatusService);
     }
 
     [Theory]
@@ -40,7 +40,7 @@ public class GetPetReportQueryTests
     public async Task Handle_WhenPetNotFound_ReturnsPetNotFound(Owner owner)
     {
         var query = new GetPetReportQuery { PetId = Guid.NewGuid(), Sub = owner.Sub };
-        _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
+        _ownerRepository.GetOwnerAsync(owner.Sub, Arg.Any<CancellationToken>()).Returns(owner);
 
         var result = await _sut.Handle(query, CancellationToken.None);
 
@@ -54,8 +54,8 @@ public class GetPetReportQueryTests
         pet.OwnerId = Guid.NewGuid();
         owner.Id = Guid.NewGuid();
         var query = new GetPetReportQuery { PetId = pet.Id, Sub = owner.Sub };
-        _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
-        _petRepository.Setup(x => x.GetPetAsync(pet.Id, It.IsAny<CancellationToken>())).ReturnsAsync(pet);
+        _ownerRepository.GetOwnerAsync(owner.Sub, Arg.Any<CancellationToken>()).Returns(owner);
+        _petRepository.GetPetAsync(pet.Id, Arg.Any<CancellationToken>()).Returns(pet);
 
         var result = await _sut.Handle(query, CancellationToken.None);
 
@@ -68,9 +68,9 @@ public class GetPetReportQueryTests
     {
         pet.OwnerId = owner.Id;
         var query = new GetPetReportQuery { PetId = pet.Id, Sub = owner.Sub };
-        _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
-        _petRepository.Setup(x => x.GetPetAsync(query.PetId, It.IsAny<CancellationToken>())).ReturnsAsync(pet);
-        _weatherService.Setup(x => x.GetWeatherDataAsync(pet.Location, It.IsAny<CancellationToken>())).ReturnsAsync(Errors.Location.InvalidLocation);
+        _ownerRepository.GetOwnerAsync(owner.Sub, Arg.Any<CancellationToken>()).Returns(owner);
+        _petRepository.GetPetAsync(pet.Id, Arg.Any<CancellationToken>()).Returns(pet);
+        _weatherService.GetWeatherDataAsync(pet.Location, Arg.Any<CancellationToken>()).Returns(Errors.Location.InvalidLocation);
 
         var result = await _sut.Handle(query, CancellationToken.None);
 
@@ -83,10 +83,10 @@ public class GetPetReportQueryTests
     {
         pet.OwnerId = owner.Id;
         var query = new GetPetReportQuery { PetId = pet.Id, Sub = owner.Sub };
-        _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
-        _petRepository.Setup(x => x.GetPetAsync(query.PetId, It.IsAny<CancellationToken>())).ReturnsAsync(pet);
-        _weatherService.Setup(x => x.GetWeatherDataAsync(pet.Location, It.IsAny<CancellationToken>())).ReturnsAsync(new WeatherData());
-        _petStatusService.Setup(x => x.GetPetStatuses(pet.Species, It.IsAny<WeatherData>())).Returns(Errors.Pet.UnknownSpecies);
+        _ownerRepository.GetOwnerAsync(owner.Sub, Arg.Any<CancellationToken>()).Returns(owner);
+        _petRepository.GetPetAsync(pet.Id, Arg.Any<CancellationToken>()).Returns(pet);
+        _weatherService.GetWeatherDataAsync(pet.Location, Arg.Any<CancellationToken>()).Returns(new WeatherData());
+        _petStatusService.GetPetStatuses(pet.Species, Arg.Any<WeatherData>()).Returns(Errors.Pet.UnknownSpecies);
 
         var result = await _sut.Handle(query, CancellationToken.None);
 
@@ -99,10 +99,10 @@ public class GetPetReportQueryTests
     {
         pet.OwnerId = owner.Id;
         var query = new GetPetReportQuery { PetId = pet.Id, Sub = owner.Sub };
-        _ownerRepository.Setup(x => x.GetOwnerAsync(owner.Sub, It.IsAny<CancellationToken>())).ReturnsAsync(owner);
-        _petRepository.Setup(x => x.GetPetAsync(query.PetId, It.IsAny<CancellationToken>())).ReturnsAsync(pet);
-        _weatherService.Setup(x => x.GetWeatherDataAsync(pet.Location, It.IsAny<CancellationToken>())).ReturnsAsync(weatherData);
-        _petStatusService.Setup(x => x.GetPetStatuses(pet.Species, It.IsAny<WeatherData>())).Returns(new List<PetStatus>() { PetStatus.Content });
+        _ownerRepository.GetOwnerAsync(owner.Sub, Arg.Any<CancellationToken>()).Returns(owner);
+        _petRepository.GetPetAsync(pet.Id, Arg.Any<CancellationToken>()).Returns(pet);
+        _weatherService.GetWeatherDataAsync(pet.Location, Arg.Any<CancellationToken>()).Returns(weatherData);
+        _petStatusService.GetPetStatuses(pet.Species, Arg.Any<WeatherData>()).Returns(new List<PetStatus>() { PetStatus.Content });
 
         var result = await _sut.Handle(query, CancellationToken.None);
 
